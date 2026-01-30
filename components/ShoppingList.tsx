@@ -16,8 +16,7 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({ items, onToggle, onA
   const [amount, setAmount] = useState('1');
   const [unit, setUnit] = useState('kg');
 
-  // Mantemos a lista unificada e ordenada pela data de criação (mais novos primeiro)
-  // Independente de estarem marcados ou não, eles ficam na mesma lista.
+  // Ordenação: Itens mais novos primeiro. Não filtramos os completados para que não "sumam".
   const sortedItems = [...items].sort((a, b) => b.createdAt - a.createdAt);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,7 +37,7 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({ items, onToggle, onA
   };
 
   const clearCompleted = () => {
-    if (window.confirm("Deseja remover permanentemente todos os itens já comprados da lista?")) {
+    if (window.confirm("Deseja remover da lista todos os itens que já foram marcados como comprados?")) {
       items.filter(i => i.completed).forEach(i => onDelete(i.id));
     }
   };
@@ -130,7 +129,7 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({ items, onToggle, onA
       <div className="space-y-3">
         <div className="flex justify-between items-center px-2">
           <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest">
-            Itens na Lista ({items.length})
+            Carrinho ({items.filter(i => i.completed).length}/{items.length})
           </h3>
           {items.some(i => i.completed) && (
             <button 
@@ -147,7 +146,7 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({ items, onToggle, onA
             key={item.id} 
             className={`group flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 ${
               item.completed 
-                ? 'bg-slate-100 border-slate-200 opacity-60' 
+                ? 'bg-slate-50 border-slate-100 opacity-60' 
                 : 'bg-white border-slate-200 shadow-sm hover:border-indigo-200'
             }`}
           >
@@ -166,7 +165,7 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({ items, onToggle, onA
                 </p>
                 <div className="flex gap-1">
                   <span className={`text-[10px] font-black px-2 py-0.5 rounded-full uppercase ${
-                    item.completed ? 'bg-slate-200 text-slate-500' : 'bg-indigo-50 text-indigo-500'
+                    item.completed ? 'bg-slate-100 text-slate-400' : 'bg-indigo-50 text-indigo-500'
                   }`}>
                     {item.amount}{item.unit}
                   </span>
@@ -188,7 +187,7 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({ items, onToggle, onA
             <button 
               onClick={() => onDelete(item.id)} 
               className="opacity-0 group-hover:opacity-100 p-2 text-slate-300 hover:text-red-500 transition ml-2"
-              title="Remover"
+              title="Excluir item"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
