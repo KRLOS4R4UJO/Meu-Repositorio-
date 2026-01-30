@@ -1,0 +1,8 @@
+{
+  "name": "SmartShop AI - Inteligência em Compras",
+  "description": "Uma lista de compras inteligente com análise de gastos, relatórios visuais e o poder do Gemini para busca de preços, planejamento de refeições e geração de mídia.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
